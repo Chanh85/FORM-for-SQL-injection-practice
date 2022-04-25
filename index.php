@@ -28,7 +28,7 @@ if(!isset($_SESSION['id']))
         <?php endif; ?>
         <div style="text-align: center;"> 
             
-            <h3>Welcome, <?php echo $_SESSION['username'];?></h3>
+            <h3>Welcome, <?php echo $_SESSION['name'];?></h3>
         </div>
 
         <br><hr>
