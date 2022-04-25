@@ -44,13 +44,11 @@ if(isset($_POST['signUpButton'])) {
 
     if(count($errors) === 0)
     {
-        $password = password_hash($password,PASSWORD_DEFAULT);
-        $token = bin2hex(random_bytes(50));
-        $verified = false;
+        //$password = password_hash($password,PASSWORD_DEFAULT);
 
-        $sql = "INSERT INTO users (username,email,verified,token,password) VALUES (?,?,?,?,?)";
+        $sql = "INSERT INTO users (username,email,password) VALUES (?,?,?)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param('ssbss',$username, $email,$verified,$token,$password);
+        $stmt->bind_param('sss',$username, $email,$password);
 
         if($stmt->execute()){   
             //login
@@ -58,7 +56,6 @@ if(isset($_POST['signUpButton'])) {
             $_SESSION['id'] = $user_id;
             $_SESSION['name'] = $username;
             $_SESSION['email'] = $email;
-            $_SESSION['verified'] = $verified;
             $_SESSION['message'] = "You are logged in!";    
             header('location: index.php');
             exit();
@@ -67,6 +64,8 @@ if(isset($_POST['signUpButton'])) {
             $errors['db_error'] = "Database error: failed to register";
         }
     }
+    $stmt->close();
+    $conn->close();
 }
 
 //if user clicks login
@@ -86,9 +85,10 @@ if(isset($_POST['login-button'])) {
 
     if(count($errors) === 0)
     {
-        $sql = "SELECT * FROM users WHERE email = ? OR username = ? LIMIT 1";
+        $sql = "SELECT * FROM users WHERE username = '$username' AND password = '$password'  LIMIT 1";
+        /*$sql = "SELECT * FROM users WHERE username = ? LIMIT 1";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param('ss', $username, $username);
+        $stmt->bind_param('s', $username);
         $stmt->execute();
         $result = $stmt->get_result();
         $user = $result->fetch_assoc();
@@ -96,27 +96,35 @@ if(isset($_POST['login-button'])) {
         if(password_verify($password, $user['password'])){
             //login success
             $_SESSION['id'] = $user['id'];
-            $_SESSION['username'] = $user['username'];
+            $_SESSION['name'] = $user['username'];
             $_SESSION['email'] = $user['email'];
             $_SESSION['verified'] = $user['verified'];
-            $_SESSION['message'] = "You are logged in!";    
+            $_SESSION['message'] = "Logged in successfully!";    
             header('location: index.php');
             exit();
         }
         else{
             $errors['login_fail'] = "Wrong credentials";
-        }
-            /*$_SESSION['id'] = $user['id'];
-            $_SESSION['username'] = $user['username'];
-            $_SESSION['email'] = $user['email'];
-            $_SESSION['verified'] = $user['verified'];
-            $_SESSION['message'] = "You are logged in!";    
-            header('location: index.php');
-            exit();*/
+        }*/
+        $result = mysqli_query($conn,$sql);
+        $data = mysqli_fetch_array($result);
+        
+        $_SESSION['id'] = $data['id'];
+        $_SESSION['name'] = $data['username'];
+        $_SESSION['email'] = $data['email'];
+        $_SESSION['verified'] = $data['verified'];
+        $_SESSION['message'] = "You are logged in!";
+        header('location: index.php');
+        //$stmt->close();
+        //$conn->close();
+    
     }
+    
+    
 }
 
-if(isset($_GET['logout'])){
+
+    if(isset($_GET['logout'])){
     session_destroy();
     unset($_SESSION['id']);
     unset($_SESSION['username']);

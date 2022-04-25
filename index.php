@@ -28,25 +28,17 @@ if(!isset($_SESSION['id']))
         <?php endif; ?>
         <div style="text-align: center;"> 
             
-            <h3>Welcome, <?php echo $_SESSION['name'];?></h3>
+            <h2>Welcome! You are logged in</h2>
+            
+            
         </div>
 
-        <br><hr>
+        <br>
         <div>
         <a href="index.php?logout=1">logout here</a>
         </div>
         <br><hr>
-        <?php if(!$_SESSION['verified']): ?>
-            <div>
-                You need to verify your account.
-                Sign in to your email account and click on the verification link we just emailed you at
-                <strong><?php echo $_SESSION['email'];?></strong>
-            </div>
-        <?php endif; ?>
-
-        <?php if($_SESSION['verified']): ?>
-            <div style="color: green;">I am verified!</div>
-        <?php endif; ?>
+        
     </div>
 
 </body>
