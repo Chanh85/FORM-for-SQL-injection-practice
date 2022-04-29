@@ -10,5 +10,6 @@ In the table, you will have to create the following fields: id(INT), username(VA
 The "id" field is an auto increment field, and also is a primary key with the length of 11. "username" and "password" has the length
 of 100, or you can leave it a different length but must be greater than 5. "email" must be unique and it may have different length
 depending on your needs.
+You also need to install XAMPP or Laragon to access phpmyadmin and create the following database.
 
 

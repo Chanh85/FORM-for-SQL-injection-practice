@@ -54,8 +54,7 @@ if(isset($_POST['signUpButton'])) {
             //login
             $user_id = $conn->insert_id;
             $_SESSION['id'] = $user_id;
-            $_SESSION['name'] = $username;
-            $_SESSION['email'] = $email;
+            
             $_SESSION['message'] = "You are logged in!";    
             header('location: index.php');
             exit();
@@ -64,8 +63,7 @@ if(isset($_POST['signUpButton'])) {
             $errors['db_error'] = "Database error: failed to register";
         }
     }
-    $stmt->close();
-    $conn->close();
+   
 }
 
 //if user clicks login
@@ -85,10 +83,15 @@ if(isset($_POST['login-button'])) {
 
     if(count($errors) === 0)
     {
-        $sql = "SELECT * FROM users WHERE username = '$username' AND password = '$password'  LIMIT 1";
+        $sql = "SELECT * FROM users WHERE username =  '$username' and password = '$password'";
+
+
+       
         /*$sql = "SELECT * FROM users WHERE username = ? LIMIT 1";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param('s', $username);
+
+
         $stmt->execute();
         $result = $stmt->get_result();
         $user = $result->fetch_assoc();
@@ -107,13 +110,16 @@ if(isset($_POST['login-button'])) {
             $errors['login_fail'] = "Wrong credentials";
         }*/
         $result = mysqli_query($conn,$sql);
-        $data = mysqli_fetch_array($result);
-        
-        $_SESSION['id'] = $data['id'];
-        $_SESSION['name'] = $data['username'];
-        $_SESSION['email'] = $data['email'];
-        $_SESSION['verified'] = $data['verified'];
-        $_SESSION['message'] = "You are logged in!";
+        while($data = mysqli_fetch_array($result))
+        {
+            if($data['username'] == $username)
+            {
+                $_SESSION['id'] = $data['id'];
+                $_SESSION['username'] = $data['username'];
+                $_SESSION['message'] = "You are logged in!";
+            }
+        }
+      
         header('location: index.php');
         //$stmt->close();
         //$conn->close();
@@ -124,12 +130,9 @@ if(isset($_POST['login-button'])) {
 }
 
 
-    if(isset($_GET['logout'])){
-    session_destroy();
-    unset($_SESSION['id']);
-    unset($_SESSION['username']);
-    unset($_SESSION['email']);
-    unset($_SESSION['verified']);
-    header('location: login.php');
-    exit();
+
+if(isset($_GET['logout'])){
+session_destroy();
+header('location: login.php');
+exit();
 }

@@ -31,7 +31,7 @@ require_once 'controllers/authController.php';
                     <label for="username"> Username: </label>
                 </div>
                 <div class="col-75">
-                    <input type="text" id="username" name="username" value="<?php echo $username; ?>"  style="margin-top: 3%">
+                    <input type="text" id="username" name="username"   style="margin-top: 3%">
                 </div>
             </div><br>
             <div class="row">
