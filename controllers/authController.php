@@ -100,8 +100,6 @@ if(isset($_POST['login-button'])) {
             //login success
             $_SESSION['id'] = $user['id'];
             $_SESSION['name'] = $user['username'];
-            $_SESSION['email'] = $user['email'];
-            $_SESSION['verified'] = $user['verified'];
             $_SESSION['message'] = "Logged in successfully!";    
             header('location: index.php');
             exit();
