@@ -44,8 +44,9 @@ if(isset($_POST['signUpButton'])) {
 
     if(count($errors) === 0)
     {
-        //$password = password_hash($password,PASSWORD_DEFAULT);
+        $password = password_hash($password,PASSWORD_DEFAULT);
 
+        //bind and prepare
         $sql = "INSERT INTO users (username,email,password) VALUES (?,?,?)";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param('sss',$username, $email,$password);
@@ -54,7 +55,7 @@ if(isset($_POST['signUpButton'])) {
             //login
             $user_id = $conn->insert_id;
             $_SESSION['id'] = $user_id;
-            
+            $_SESSION['username'] = $username;
             $_SESSION['message'] = "You are logged in!";    
             header('location: index.php');
             exit();
@@ -83,11 +84,11 @@ if(isset($_POST['login-button'])) {
 
     if(count($errors) === 0)
     {
-        $sql = "SELECT * FROM users WHERE username =  '$username' and password = '$password'";
+        //$sql = "SELECT * FROM users WHERE username =  '$username' and password = '$password'";
 
 
        
-        /*$sql = "SELECT * FROM users WHERE username = ? LIMIT 1";
+        $sql = "SELECT * FROM users WHERE username = ? LIMIT 1";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param('s', $username);
 
@@ -99,15 +100,16 @@ if(isset($_POST['login-button'])) {
         if(password_verify($password, $user['password'])){
             //login success
             $_SESSION['id'] = $user['id'];
-            $_SESSION['name'] = $user['username'];
+            $_SESSION['username'] = $user['username'];
             $_SESSION['message'] = "Logged in successfully!";    
             header('location: index.php');
             exit();
         }
         else{
-            $errors['login_fail'] = "Wrong credentials";
-        }*/
-        $result = mysqli_query($conn,$sql);
+            $errors['login_fail'] = 'Wrong credentials';
+        }
+
+        /*$result = mysqli_query($conn,$sql);
         while($data = mysqli_fetch_array($result))
         {
             if($data['username'] == $username)
@@ -118,7 +120,7 @@ if(isset($_POST['login-button'])) {
             }
         }
       
-        header('location: index.php');
+        header('location: index.php');*/
         //$stmt->close();
         //$conn->close();
     

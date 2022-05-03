@@ -58,13 +58,15 @@ if(!isset($_SESSION['id']))
             }
             if(count($errors) === 0)
             {
-                /*$sql = "SELECT * FROM users WHERE username = ? LIMIT 1";
+                $sql = "SELECT * FROM users WHERE username = ? LIMIT 1";
                 $stmt = $conn->prepare($sql);
                 $stmt->bind_param('s', $search);
+
+
                 $stmt->execute();
-                $result = $stmt->get_result();*/
-                $sql = "SELECT * FROM users WHERE username = '$search' ";
-                $result = mysqli_query($conn,$sql);
+                $result = $stmt->get_result();
+                //$sql = "SELECT * FROM users WHERE username = '$search' ";
+                //$result = mysqli_query($conn,$sql);
                  
                 //$user = mysqli_fetch_array($result);
                
