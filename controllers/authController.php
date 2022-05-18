@@ -84,6 +84,7 @@ if(isset($_POST['login-button'])) {
 
     if(count($errors) === 0)
     {
+        //bad code, vulnerable to SQL Injection
         //$sql = "SELECT * FROM users WHERE username =  '$username' and password = '$password'";
 
 
@@ -109,6 +110,7 @@ if(isset($_POST['login-button'])) {
             $errors['login_fail'] = 'Wrong credentials';
         }
 
+        //bad code, vulnerable to SQL Injection
         /*$result = mysqli_query($conn,$sql);
         while($data = mysqli_fetch_array($result))
         {
@@ -121,8 +123,7 @@ if(isset($_POST['login-button'])) {
         }
       
         header('location: index.php');*/
-        //$stmt->close();
-        //$conn->close();
+     
     
     }
     

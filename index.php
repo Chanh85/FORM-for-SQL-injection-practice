@@ -65,6 +65,9 @@ if(!isset($_SESSION['id']))
 
                 $stmt->execute();
                 $result = $stmt->get_result();
+
+                
+                //bad code, vulnerable to SQL Injection
                 //$sql = "SELECT * FROM users WHERE username = '$search' ";
                 //$result = mysqli_query($conn,$sql);
                  
